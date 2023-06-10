@@ -13,10 +13,11 @@ class ImageGallery extends Component {
       loading: true
     };
   }
+  
 
-  componentDidMount() {
-    this.fetchImages();
-  }
+componentDidMount() {
+  this.fetchImages();
+}
 
   componentDidUpdate(prevProps) {
     if (prevProps.searchTerm !== this.props.searchTerm) {
@@ -24,17 +25,25 @@ class ImageGallery extends Component {
     }
   }
 
-  fetchImages = async () => {
-    try {
-      this.setState({ loading: true });
-      const response = await axios.get(
-        `https://pixabay.com/api/?q=${this.props.searchTerm}&page=1&key=35513783-cdd32f526a75b86a8cfb6c8f5&image_type=photo&orientation=horizontal&per_page=12`
-      )
-      this.setState({ images: response.data.hits, loading: false });
-    } catch (error) {
-      console.log(error);
-    }
-  };
+ fetchImages = async () => {
+  const { searchTerm } = this.props;
+  if (!searchTerm) {
+    // Handle case when searchTerm is empty
+    this.setState({ images: [], loading: false });
+    return;
+  }
+
+  try {
+    this.setState({ loading: true });
+    const response = await axios.get(
+      `https://pixabay.com/api/?q=${searchTerm}&page=1&key=35513783-cdd32f526a75b86a8cfb6c8f5&image_type=photo&orientation=horizontal&per_page=12`
+    );
+    this.setState({ images: response.data.hits, loading: false });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 
   render() {
     const { images, loading } = this.state;
@@ -43,13 +52,16 @@ class ImageGallery extends Component {
       <div>
         {loading ? (
           <Loader /> // Display the Loader component while images are being loaded
-        ) : (
-            <ul className={styles.gallery}>
+        ) : null}
+      
+        {images.length > 0 && !loading && (
+          <ul className={styles.ImageGallery}>
             {images.map((image) => (
               <ImageGalleryItem key={image.id} image={image} />
             ))}
           </ul>
         )}
+
         {images.length > 0 && !loading && <Button />} {/* Render the Button component if there are loaded images */}
       </div>
     );
@@ -57,6 +69,7 @@ class ImageGallery extends Component {
 }
 
 export default ImageGallery;
+
 
 
 
