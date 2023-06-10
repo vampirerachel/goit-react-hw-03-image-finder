@@ -1,16 +1,17 @@
-import React from "react";
-import styles from "./styles.module.css";
+import React from 'react';
+import styles from './styles.module.css';
 
-const ImageGalleryItem = ({ image }) => {
-  const { webformatURL, tags } = image; // Extract the necessary data from the image prop
+const ImageGalleryItem = ({ image, onClick }) => {
+  const { webformatURL, tags } = image;
 
   return (
-    <li>
-      <img className={styles.ImageGalleryItem} src={webformatURL} alt={tags} />
+    <li className={styles.ImageGalleryItem}>
+      <img src={webformatURL} alt={tags} onClick={onClick} />
     </li>
   );
 };
 
 export default ImageGalleryItem;
+
 
 

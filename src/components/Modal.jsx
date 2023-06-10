@@ -7,7 +7,7 @@ const Modal = ({ image, onClose }) => {
   return (
     <div className={styles.Overlay} onClick={onClose}>
       <div className={styles.Modal}>
-        <img src={largeImageURL} alt={tags} />
+        <img src={largeImageURL} alt={tags} className={styles.ModalImage} />
       </div>
     </div>
   );
